@@ -39,7 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: a1ex4/ownfoil
+          images: snwaine/myfoil
           flavor: |
             latest=auto
           tags: |
