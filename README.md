@@ -1,9 +1,9 @@
-# Ownfoil
-[![Docker Pulls](https://img.shields.io/docker/pulls/a1ex4/ownfoil)](https://hub.docker.com/r/a1ex4/ownfoil)
-[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/a1ex4/ownfoil?sort=date&arch=amd64
-)](https://hub.docker.com/r/a1ex4/ownfoil/tags)
+# Myfoil
+[![Docker Pulls](https://img.shields.io/docker/pulls/snwaine/myfoil)](https://hub.docker.com/r/snwaine/myfoil)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/snwaine/myfoil?sort=date&arch=amd64
+)](https://hub.docker.com/r/snwaine/myfoil/tags)
 
-Ownfoil is a Nintendo Switch library manager, that will also turn your library into a fully customizable and self-hosted Tinfoil Shop. The goal of this project is to manage your library, identify any missing content (DLCs or updates) and provide a user friendly way to browse your content. Some of the features include:
+Myfoil is a Nintendo Switch library manager, that will also turn your library into a fully customizable and self-hosted Tinfoil Shop. The goal of this project is to manage your library, identify any missing content (DLCs or updates) and provide a user friendly way to browse your content. Some of the features include:
 
  - multi user authentication
  - web interface for configuration
@@ -25,7 +25,7 @@ The project is still in development, expect things to break or change without no
 
 Running this command will start the shop on port `8465` with the library in `/your/game/directory` :
 
-    docker run -d -p 8465:8465 -v /your/game/directory:/games -v /your/config/directory:/app/config --name ownfoil a1ex4/ownfoil
+    docker run -d -p 8465:8465 -v /your/game/directory:/games -v /your/config/directory:/app/config --name myfoil snwaine/myfoil
 
 The shop is now accessible with your computer/server IP and port, i.e. `http://localhost:8465` from the same computer or `http://192.168.1.100:8465` from a device in your network.
 
@@ -35,9 +35,9 @@ Create a file named `docker-compose.yml` with the following content:
 version: "3"
 
 services:
-  ownfoil:
-    container_name: ownfoil
-    image: a1ex4/ownfoil
+  myfoil:
+    container_name: myfoil
+    image: snwaine/myfoil
    # environment:
    #   # For write permission in config directory
    #   - PUID=1000
@@ -60,8 +60,8 @@ This is usefull if you don't want to remember the `docker run` command and have 
 ## Using Python
 Clone the repository using `git`, install the dependencies and you're good to go:
 ```
-$ git clone --recurse-submodules https://github.com/a1ex4/ownfoil
-$ cd ownfoil
+$ git clone --recurse-submodules https://github.com/snwaine/myfoil
+$ cd myfoil
 $ pip install -r requirements.txt
 $ python app/app.py
 ```
@@ -72,23 +72,23 @@ In Tinfoil, add a shop with the following settings:
  - Protocol: `http` (or `https` if using a SSL enabled reverse proxy)
  - Host: server/computer IP, i.e. `192.168.1.100`
  - Port: host port of the container, i.e. `8000`
- - Username: username as created in Ownfoil settings (if the shop is set to Private)
- - Password: password as created in Ownfoil settings (if the shop is set to Private)
+ - Username: username as created in Myfoil settings (if the shop is set to Private)
+ - Password: password as created in Myfoil settings (if the shop is set to Private)
 
 # Usage
-Once Ownfoil is running you can access the Shop Web UI by navigating to the `http://<computer/server IP>:8465`.
+Once Myfoil is running you can access the Shop Web UI by navigating to the `http://<computer/server IP>:8465`.
 
 ## User administration
-Ownfoil requires an `admin` user to be created to enable Authentication for your Shop. Go to the `Settings` to create a first user that will have admin rights. Then you can add more users to your shop the same way.
+Myfoil requires an `admin` user to be created to enable Authentication for your Shop. Go to the `Settings` to create a first user that will have admin rights. Then you can add more users to your shop the same way.
 
 ## Library administration
-In the `Settings` page under the `Library` section, you can add directories containing your content. You can then manually trigger the library scan: Ownfoil will scan the content of the directories and try to identify every supported file (currently `nsp`, `nsz`, `xci`, `xcz`).
+In the `Settings` page under the `Library` section, you can add directories containing your content. You can then manually trigger the library scan: Myfoil will scan the content of the directories and try to identify every supported file (currently `nsp`, `nsz`, `xci`, `xcz`).
 There is watchdog in place for all your added directories: files moved, renamed, added or removed will be reflected directly in your library.
 
 ## Titles configuration
 In the `Settings` page under the `Titles` section is where you specify the language of your Shop (currently the same for all users).
 
-This is where you can also upload your `console keys` file to enable content identification using decryption, instead of only using filenames. If you do not provide keys, Ownfoil expects the files to be named `[APP_ID][vVERSION]`.
+This is where you can also upload your `console keys` file to enable content identification using decryption, instead of only using filenames. If you do not provide keys, Myfoil expects the files to be named `[APP_ID][vVERSION]`.
 
 ## Shop customization
 In the `Settings` page under the `Shop` section is where you customize your Shop, like the message displayed when successfully accessing the shop from Tinfoil or if the shop is private or public.
