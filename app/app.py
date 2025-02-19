@@ -41,7 +41,7 @@ os.makedirs(CONFIG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = MYFOIL_DB
+app.config["SQLALCHEMY_DATABASE_URI"] = OWNFOIL_DB
 # TODO: generate random secret_key
 app.config['SECRET_KEY'] = '8accb915665f11dfa15c2db1a4e8026905f57716'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -426,37 +426,30 @@ def reload_conf():
 def on_library_change(events):
     with app.app_context():
         created_events = [e for e in events if e.type == 'created']
-        modified_events = [e for e in events if e.type != 'created']
+        if created_events:
+            new_files = [e.src_path for e in created_events]
+            library_path = created_events[0].directory
+            identify_files_and_add_to_db(library_path, new_files)
 
+        modified_events = [e for e in events if e.type != 'created']
         for event in modified_events:
             if event.type == 'moved':
-                if file_exists_in_db(event.src_path):
-                    # update the path
-                    update_file_path(event.directory, event.src_path, event.dest_path)
-                else:
-                    # add to the database
-                    event.src_path = event.dest_path
-                    created_events.append(event)
+                # update the path
+                update_file_path(event.directory, event.src_path, event.dest_path)
 
             elif event.type == 'deleted':
                 # delete the file from library if it exists
                 delete_file_by_filepath(event.src_path)
 
             elif event.type == 'modified':
-                # can happen if file copy has started before the app was running
+                # can happen if file copy has started before running
                 identify_files_and_add_to_db(event.directory, [event.src_path])
-
-        if created_events:
-            directories = list(set(e.directory for e in created_events))
-            for library_path in directories:
-                new_files = [e.src_path for e in created_events if e.directory == library_path]
-                identify_files_and_add_to_db(library_path, new_files)
 
     post_library_change()
 
 
 if __name__ == '__main__':
-    logger.info('Starting initialization of Myfoil...')
+    logger.info('Starting initialization of Ownfoil...')
     init()
     logger.info('Initialization steps done, starting server...')
     app.run(debug=False, host="0.0.0.0", port=8465)
