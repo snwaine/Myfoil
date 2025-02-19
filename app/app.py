@@ -41,7 +41,7 @@ os.makedirs(CONFIG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = OWNFOIL_DB
+app.config["SQLALCHEMY_DATABASE_URI"] = MYFOIL_DB
 # TODO: generate random secret_key
 app.config['SECRET_KEY'] = '8accb915665f11dfa15c2db1a4e8026905f57716'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
