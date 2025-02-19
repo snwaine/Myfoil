@@ -264,17 +264,11 @@
 
     function getColumnsForCardSize(size) {
         switch (size) {
-            case 1: return 1; // 2 columns
-            case 2: return 2; // 3 columns
-            case 3: return 3; // 4 columns
-            case 4: return 4; // 6 columns
-            case 5: return 5; // 8 columns
-            case 6: return 6; // 8 columns
-            case 7: return 7; // 8 columns
-            case 8: return 8; // 8 columns
-            case 9: return 9; // 8 columns
-            case 10: return 10; // 8 columns
-            default: return 5; // default to 3 columns
+            case 1: return 3; // 3 columns
+            case 2: return 4; // 4 columns
+            case 3: return 5; // 5 columns
+            case 4: return 6; // 6 columns
+            default: return 4; // default to 3 columns
         }
     }
 
