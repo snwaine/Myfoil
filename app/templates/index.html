@@ -86,10 +86,11 @@
                     Items per page
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdownBtn">
-                    <li><button class="dropdown-item items-per-page" data-value="24">24</button></li>
                     <li><button class="dropdown-item items-per-page" data-value="48">48</button></li>
-                    <li><button class="dropdown-item items-per-page" data-value="72">72</button></li>
                     <li><button class="dropdown-item items-per-page" data-value="96">96</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="144">144</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="196">196</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="244">244</button></li>
                     <li>
                         <div class="dropdown-item">
                             <input type="number" id="customItemsPerPage" class="form-control" placeholder="Custom">
@@ -102,7 +103,7 @@
         <!-- Card size slider -->
         <div class="col-auto">
             <!-- <label for="cardSizeRange" class="form-label">Card Size</label> -->
-            <input type="range" class="form-range" min="1" max="5" step="1" id="cardSizeRange">
+            <input type="range" class="form-range" min="1" max="10" step="1" id="cardSizeRange">
         </div>
     </div>
     <div class="grid-container" id="gridContainer">
@@ -119,7 +120,7 @@
 <script>
     let games;
     let filteredGames;
-    let itemsPerPage = 24;
+    let itemsPerPage = 96;
     let currentPage = 1;
     let totalGames = 0;
     let cardSize = 5; // Default card size
@@ -148,7 +149,7 @@
         }
 
         // Set slider to show 3 columns by default
-        $('#cardSizeRange').val(3);
+        $('#cardSizeRange').val(5);
 
         // init version tooltips
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -168,10 +169,10 @@
         start = (currentPage - 1) * itemsPerPage
         end = start + itemsPerPage
         baseGames = filteredGames.filter(game => game.type === 'BASE');
-        paginatedGames = filteredGames.slice(start, end);
+        paginatedGames = baseGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
-            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${24 / getColumnsForCardSize(cardSize)}`);
+            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${96 / getColumnsForCardSize(cardSize)}`);
 
             const card = $('<div class="card text-bg-dark game-card"></div>');
 
@@ -267,8 +268,13 @@
             case 2: return 2; // 3 columns
             case 3: return 3; // 4 columns
             case 4: return 4; // 6 columns
-            case 5: return 6; // 8 columns
-            default: return 4; // default to 3 columns
+            case 5: return 5; // 8 columns
+            case 6: return 6; // 8 columns
+            case 7: return 7; // 8 columns
+            case 8: return 8; // 8 columns
+            case 9: return 9; // 8 columns
+            case 10: return 10; // 8 columns
+            default: return 5; // default to 3 columns
         }
     }
 
