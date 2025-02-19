@@ -1,7 +1,10 @@
 # Myfoil
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/snwaine/myfoil?sort=semver)](https://github.com/snwaine/myfoil/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/snwaine/myfoil)](https://hub.docker.com/r/snwaine/myfoil)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/snwaine/myfoil?sort=date&arch=amd64
 )](https://hub.docker.com/r/snwaine/myfoil/tags)
+[![Tinfoil Version](https://img.shields.io/badge/Tinfoil-v15.00-green)](https://tinfoil.io)
+[![Awoo Version](https://img.shields.io/badge/Awoo-v1.3.4-red)](https://github.com/Huntereb/Awoo-Installer)
 
 Myfoil is a Nintendo Switch library manager, that will also turn your library into a fully customizable and self-hosted Tinfoil Shop. The goal of this project is to manage your library, identify any missing content (DLCs or updates) and provide a user friendly way to browse your content. Some of the features include:
 
