@@ -172,7 +172,7 @@
         paginatedGames = baseGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
-            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${96 / getColumnsForCardSize(cardSize)}`);
+            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${12 / getColumnsForCardSize(cardSize)}`);
 
             const card = $('<div class="card text-bg-dark game-card"></div>');
 
@@ -268,7 +268,8 @@
             case 2: return 4; // 4 columns
             case 3: return 5; // 5 columns
             case 4: return 6; // 6 columns
-            default: return 4; // default to 3 columns
+            case 5: return 7; // 7 columns
+            default: return 4; // default to 6 columns
         }
     }
 
