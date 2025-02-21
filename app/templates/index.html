@@ -324,7 +324,7 @@
         const gameGrid = $('#gameGrid');
         const gameCols = gameGrid.find('.game-col');
         gameCols.each(function () {
-            $(this).removeClass().addClass(`col game-col col-${12 / getColumnsForCardSize(cardSize)}`);
+            $(this).removeClass().addClass(`col game-col col-${8 / getColumnsForCardSize(cardSize)}`);
         });
     }
 
