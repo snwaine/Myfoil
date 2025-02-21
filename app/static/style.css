@@ -71,12 +71,12 @@ p.game-description {
     font-weight: normal;
   }
 
-.col-2, .col-3, .col-4, .col-5, .col-6 {
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-12 {
     display: flex;
     flex-direction: column;
 }
 
-.col-2 > .card, .col-3 > .card, .col-4 > .card, .col-5 > .card, .col-6 > .card {
+.col-1 > .card, .col-2 > .card, .col-3 > .card, .col-4 > .card, .col-5 > .card, .col-6 > .card, .col-12 > .card {
     flex: 1;
 }
 
