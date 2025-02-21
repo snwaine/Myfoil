@@ -21,7 +21,7 @@
 }
 
 .game-tag {
-    font-size: 1em;
+    font-size: 0.7em;
     margin-right: 5px;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .game-title {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     /* font-size: 18px; */
     font-weight: bold;
     margin-bottom: 5px;
