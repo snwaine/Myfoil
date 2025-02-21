@@ -265,10 +265,10 @@
 
     function getColumnsForCardSize(size) {
         switch (size) {
-            case 1: return 2; // 2 columns
-            case 2: return 3; // 3 columns
-            case 3: return 4; // 4 columns
-            case 4: return 5; // 5 columns
+            case 1: return 2; // 3 columns
+            case 2: return 3; // 4 columns
+            case 3: return 4; // 5 columns
+            case 4: return 5; // 6 columns
             case 5: return 6; // 8 columns
             default: return 4; // default to 6 columns
         }
@@ -324,7 +324,7 @@
         const gameGrid = $('#gameGrid');
         const gameCols = gameGrid.find('.game-col');
         gameCols.each(function () {
-            $(this).removeClass().addClass(`col game-col col-${8 / getColumnsForCardSize(cardSize)}`);
+            $(this).removeClass().addClass(`col game-col col-${16 / getColumnsForCardSize(cardSize)}`);
         });
     }
 
