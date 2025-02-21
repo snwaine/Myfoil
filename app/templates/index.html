@@ -17,7 +17,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <label class="form-check-label dropdown-item" for="filterCheckBase">
-                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase">
+                                <input class="form-check-input filterLabel" type="checkbox" value="true" id="filterCheckBase">
                                 BASE
                             </label>
                         </li>
@@ -124,7 +124,7 @@
     let itemsPerPage = 96;
     let currentPage = 1;
     let totalGames = 0;
-    let cardSize = 5; // Default card size
+    let cardSize = 4; // Default card size
     let currentView = 'card'; // Default view is 'card'
 
     function fetchGames() {
@@ -173,7 +173,7 @@
         paginatedGames = baseGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
-            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${16 / getColumnsForCardSize(cardSize)}`);
+            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${12 / getColumnsForCardSize(cardSize)}`);
 
             const card = $('<div class="card text-bg-dark game-card"></div>');
 
@@ -265,12 +265,12 @@
 
     function getColumnsForCardSize(size) {
         switch (size) {
-            case 1: return 2; // 3 columns
-            case 2: return 3; // 4 columns
-            case 3: return 4; // 5 columns
-            case 4: return 5; // 6 columns
+            case 1: return 1; // 2 columns
+            case 2: return 2; // 3 columns
+            case 3: return 3; // 4 columns
+            case 4: return 4; // 6 columns
             case 5: return 6; // 8 columns
-            default: return 4; // default to 6 columns
+            default: return 4; // default to 3 columns
         }
     }
 
@@ -324,7 +324,7 @@
         const gameGrid = $('#gameGrid');
         const gameCols = gameGrid.find('.game-col');
         gameCols.each(function () {
-            $(this).removeClass().addClass(`col game-col col-${16 / getColumnsForCardSize(cardSize)}`);
+            $(this).removeClass().addClass(`col game-col col-${12 / getColumnsForCardSize(cardSize)}`);
         });
     }
 
