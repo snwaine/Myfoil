@@ -17,7 +17,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <label class="form-check-label dropdown-item" for="filterCheckBase">
-                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase" defaultChecked=true>
+                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase" checked="true">
                                 BASE
                             </label>
                         </li>
@@ -126,6 +126,7 @@
     let totalGames = 0;
     let cardSize = 5; // Default card size
     let currentView = 'card'; // Default view is 'card'
+    let filterCheckBase = checked="true";
 
     function fetchGames() {
         return new Promise((resolve, reject) => {
