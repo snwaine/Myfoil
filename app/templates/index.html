@@ -17,7 +17,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <label class="form-check-label dropdown-item" for="filterCheckBase">
-                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase">
+                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase" checked>
                                 BASE
                             </label>
                         </li>
@@ -170,7 +170,7 @@
         // Get games for the current page
         start = (currentPage - 1) * itemsPerPage
         end = start + itemsPerPage
-        paginatedGames = baseGames.slice(start, end);
+        paginatedGames = filteredGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
             const gameCol = $('<div class="col game-col"></div>').addClass(`col-${12 / getColumnsForCardSize(cardSize)}`);
