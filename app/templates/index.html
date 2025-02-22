@@ -169,7 +169,6 @@
         // Get games for the current page
         start = (currentPage - 1) * itemsPerPage
         end = start + itemsPerPage
-        baseGames = filteredGames.filter(game => game.type === 'BASE');
         paginatedGames = baseGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
