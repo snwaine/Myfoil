@@ -132,8 +132,8 @@
             $.get(`/api/titles`, function (data) {
                 totalGames = data.total;
                 games = data.games;
-                filteredGames = games
-                filterCheckBase.add("checked")
+                filteredGames = games;
+                filterCheckBase.add("checked");
                 activeTypeFilters.add('BASE');
                 resolve();
             }).fail(function() {
