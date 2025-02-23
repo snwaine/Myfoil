@@ -127,6 +127,11 @@
     let cardSize = 5; // Default card size
     let currentView = 'card'; // Default view is 'card'
 
+    // Set to store active filters
+    const activeTypeFilters = new Set();
+    const activeUpdateFilters = new Set();
+    const activeCompletionFilters = new Set();
+
     function fetchGames() {
         return new Promise((resolve, reject) => {
             $.get(`/api/titles`, function (data) {
@@ -136,6 +141,7 @@
                 filterCheckBase.is("BASE");
                 activeTypeFilters.add('BASE');
                 updateFilter();
+                applyFilters();
                 resolve();
             }).fail(function() {
                 reject();
@@ -428,11 +434,6 @@
         const attributeText = $(this).val();
         filterBySearchText(attributeText);
     });
-
-    // Set to store active filters
-    const activeTypeFilters = new Set();
-    const activeUpdateFilters = new Set();
-    const activeCompletionFilters = new Set();
 
     function updateFilter() {
         // $('#filterDropdownBtn').toggle();
