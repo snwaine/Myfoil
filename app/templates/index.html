@@ -17,7 +17,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <label class="form-check-label dropdown-item" for="filterCheckBase">
-                                <input class="form-check-input filterLabel" type="checkbox" value=":checked" id="filterCheckBase">
+                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckBase">
                                 BASE
                             </label>
                         </li>
@@ -134,6 +134,7 @@
                 totalGames = data.total;
                 games = data.games;
                 filteredGames = games;
+                filteredGames.filter(game => game.type === 'BASE');
                 resolve();
             }).fail(function() {
                 reject();
