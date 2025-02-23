@@ -133,7 +133,7 @@
                 totalGames = data.total;
                 games = data.games;
                 filteredGames = games
-                filterCheckBase.is("checked")
+                filterCheckBase.add("checked")
                 activeTypeFilters.add('BASE');
                 resolve();
             }).fail(function() {
