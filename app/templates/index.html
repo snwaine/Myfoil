@@ -126,7 +126,7 @@
     let totalGames = 0;
     let cardSize = 5; // Default card size
     let currentView = 'card'; // Default view is 'card'
-    let filterCheckBase = checked="true";
+    let filterCheckBase = 'checked';
 
     function fetchGames() {
         return new Promise((resolve, reject) => {
@@ -134,7 +134,6 @@
                 totalGames = data.total;
                 games = data.games;
                 filteredGames = games;
-                filteredGames.filter(game => game.type === 'BASE');
                 resolve();
             }).fail(function() {
                 reject();
