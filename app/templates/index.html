@@ -133,6 +133,10 @@
                 totalGames = data.total;
                 games = data.games;
                 filteredGames = games;
+                $('filterCheckBase').click(function() {
+                    updateFilter();
+                    applyFilters();
+                });
                 resolve();
             }).fail(function() {
                 reject();
