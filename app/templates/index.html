@@ -142,7 +142,7 @@
         }
 
         $.ajax({
-            url: "/api/settings/libraryBrower",
+            url: "/api/settings/libraryBrowser",
             type: 'POST',
             data: JSON.stringify(data),
             contentType: "application/json",
@@ -480,6 +480,7 @@
 
     function updateFilter() {
         // $('#filterDropdownBtn').toggle();
+        submitIndexSettings();
         if ($('#filterCheckBase').is(":checked")) {
             activeTypeFilters.add('BASE');
         } else {
@@ -514,7 +515,6 @@
         else {
             activeCompletionFilters.delete('Missing DLC');
         }
-        submitIndexSettings();
     }
 
     function findCommonElements(...arrays) {
