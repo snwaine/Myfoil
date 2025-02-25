@@ -132,7 +132,6 @@
     }
 
      function submitIndexSettings() {
-         //$('#submitShopSettingsBtn').prop('disabled', true);
          data = {
              filterBass: getCheckboxStatus("filterCheckBase"),
              filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
@@ -159,7 +158,6 @@
                         $("#" + formTextElement).text(error['error']);
                     });
                 }
-                //$('#submitShopSettingsBtn').prop('disabled', false);
             }
         });
     }
