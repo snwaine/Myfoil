@@ -119,6 +119,59 @@
 </div>
 
 <script>
+
+    // Load setting
+    settings_map = {
+        'library/path': 'libraryPathInput'
+    };
+
+    function getInputVal(inputId) {
+        return $("#" + inputId).val();
+    };
+
+    function setInputVal(inputId, value) {
+        return $("#" + inputId).val(value);
+    };
+
+    function getCheckboxStatus(checkboxId) {
+        return $('#' + checkboxId).is(":checked")
+    }
+
+     function submitIndexSettings() {
+         //$('#submitShopSettingsBtn').prop('disabled', true);
+         data = {
+             filterBass: getCheckboxStatus("filterCheckBase"),
+             filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
+             filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
+             filterComplete: getCheckboxStatus("filterCheckComplete"),
+             filterMissingDlc: getCheckboxStatus("filterCheckDlc"),    
+        }
+
+        $.ajax({
+            url: "/api/settings/libraryBrower",
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (result) {
+                if (!result['success']) {
+                    console.log('Not Success!');
+                    result['errors'].forEach(error => {
+                        path = error['path'];
+                        formId = settings_map[path];
+                        form = $('#' + formId);
+                        form.addClass('is-invalid');
+                        formTextElement = form.attr('aria-describedby');
+                        $("#" + formTextElement).addClass('invalid-feedback');
+                        $("#" + formTextElement).text(error['error']);
+                    });
+                }
+                //$('#submitShopSettingsBtn').prop('disabled', false);
+            }
+        });
+    }
+
+
+    
     let games;
     let filteredGames;
     let itemsPerPage = 24;
