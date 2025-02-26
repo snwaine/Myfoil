@@ -128,7 +128,7 @@
     };
 
     function getCheckboxStatus(checkboxId) {
-        return $('#' + checkboxId).is(":checked")
+        return $('#' + checkboxId).prop('checked');   //.is(":checked")
     }
 
      function submitIndexSettings() {
