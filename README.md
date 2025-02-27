@@ -17,7 +17,6 @@ The project is still in development, expect things to break or change without no
 - [Installation](#nstallation)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
-- [Similar Projects](#similar-projects)
 
 # Installation
 ## Using Docker
@@ -42,6 +41,12 @@ services:
    #   # For write permission in config directory
    #   - PUID=1000
    #   - PGID=1000
+   #   # to create/update an admin user at startup
+   #   - USER_ADMIN_NAME=admin
+   #   - USER_ADMIN_PASSWORD=asdvnf!546
+   #   # to create/update a regular user at startup
+   #   - USER_GUEST_NAME=guest
+   #   - USER_GUEST_PASSWORD=oerze!@8981
     volumes:
       - /your/game/directory:/games
       - ./config:/app/config
@@ -108,3 +113,4 @@ Planned feature, in no particular order.
     - [ ] Only backup and serve saves based on the user/Switch
  - External services:
     - [ ] Integrate torrent indexer Jackett to download updates automatically
+    

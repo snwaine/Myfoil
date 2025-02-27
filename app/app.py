@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, Response
 from flask_login import LoginManager
+from flask_migrate import Migrate, upgrade
 from functools import wraps
 import yaml
 from file_watcher import Watcher
@@ -18,6 +19,7 @@ from titles import *
 from utils import *
 from library import *
 import titledb
+import os
 
 def init():
     global watcher
@@ -41,7 +43,7 @@ os.makedirs(CONFIG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = OWNFOIL_DB
+app.config["SQLALCHEMY_DATABASE_URI"] = MYFOIL_DB
 # TODO: generate random secret_key
 app.config['SECRET_KEY'] = '8accb915665f11dfa15c2db1a4e8026905f57716'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -76,7 +78,7 @@ log_werkzeug.addFilter(FilterRemoveDateFromWerkzeugLogs())
 
 
 db.init_app(app)
-
+migrate = Migrate(app, db)
 login_manager.init_app(app)
 
 @login_manager.user_loader
@@ -88,6 +90,14 @@ app.register_blueprint(auth_blueprint)
 
 with app.app_context():
     db.create_all()
+    if is_migration_needed():
+        upgrade()
+        logger.info("Migration applied successfully.")
+    # init users from ENV
+    if os.environ.get('USER_ADMIN_NAME') is not None:
+        init_user_from_environment(environment_name="USER_ADMIN", admin=True)
+    if os.environ.get('USER_GUEST_NAME') is not None:
+        init_user_from_environment(environment_name="USER_GUEST", admin=False)
 
 def tinfoil_error(error):
     return jsonify({
@@ -102,7 +112,8 @@ def tinfoil_access(f):
         auth_success = None
         request.verified_host = None
         # Host verification to prevent hotlinking
-        host_verification = request.is_secure or request.headers.get("X-Forwarded-Proto") == "https"
+        #Tinfoil doesn't send Hauth for file grabs, only directories, so ignore get_game endpoints.
+        host_verification = "/api/get_game" not in request.path and (request.is_secure or request.headers.get("X-Forwarded-Proto") == "https")
         if host_verification:
             request_host = request.host
             request_hauth = request.headers.get('Hauth')
@@ -141,7 +152,7 @@ def tinfoil_access(f):
             if hauth_success is False:
                 return tinfoil_error(error)
         
-        # Now checking auth if shop is private
+       # Now checking auth if shop is private
         if not app_settings['shop']['public']:
             # Shop is private
             if auth_success is None:
@@ -456,7 +467,7 @@ def on_library_change(events):
 
 
 if __name__ == '__main__':
-    logger.info('Starting initialization of Ownfoil...')
+    logger.info('Starting initialization of Myfoil...')
     init()
     logger.info('Initialization steps done, starting server...')
     app.run(debug=False, host="0.0.0.0", port=8465)

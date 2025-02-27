@@ -22,12 +22,6 @@
                             </label>
                         </li>
                         <li>
-                            <label class="form-check-label dropdown-item" for="filterCheckDlc">
-                                <input class="form-check-input filterLabel" type="checkbox" value="" id="filterCheckDlc">
-                                DLC
-                            </label>
-                        </li>
-                        <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
@@ -88,8 +82,10 @@
                 <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdownBtn">
                     <li><button class="dropdown-item items-per-page" data-value="24">24</button></li>
                     <li><button class="dropdown-item items-per-page" data-value="48">48</button></li>
-                    <li><button class="dropdown-item items-per-page" data-value="72">72</button></li>
                     <li><button class="dropdown-item items-per-page" data-value="96">96</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="144">144</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="196">196</button></li>
+                    <li><button class="dropdown-item items-per-page" data-value="244">244</button></li>
                     <li>
                         <div class="dropdown-item">
                             <input type="number" id="customItemsPerPage" class="form-control" placeholder="Custom">
@@ -117,6 +113,57 @@
 </div>
 
 <script>
+
+    // Load setting
+    settings_map = {
+        'library/path': 'libraryPathInput'
+    };
+
+    function getInputVal(inputId) {
+        return $("#" + inputId).val();
+    };
+
+    function setInputVal(inputId, value) {
+        return $("#" + inputId).val(value);
+    };
+
+    function getCheckboxStatus(checkboxId) {
+        return $('#' + checkboxId).prop('checked');   //.is(":checked")
+    }
+
+     function submitIndexSettings() {
+         data = {
+             filterBass: getCheckboxStatus("filterCheckBase"),
+             filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
+             filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
+             filterComplete: getCheckboxStatus("filterCheckComplete"),
+             filterMissingDlc: getCheckboxStatus("filterCheckDlc"),    
+        }
+
+        $.ajax({
+            url: "/api/settings/libraryBrowser",
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (result) {
+                if (!result['success']) {
+                    console.log('Not Success!');
+                    result['errors'].forEach(error => {
+                        path = error['path'];
+                        formId = settings_map[path];
+                        form = $('#' + formId);
+                        form.addClass('is-invalid');
+                        formTextElement = form.attr('aria-describedby');
+                        $("#" + formTextElement).addClass('invalid-feedback');
+                        $("#" + formTextElement).text(error['error']);
+                    });
+                }
+            }
+        });
+    }
+
+
+    
     let games;
     let filteredGames;
     let itemsPerPage = 24;
@@ -147,8 +194,9 @@
             adjustIconSizes();
         }
 
-        // Set slider to show 3 columns by default
-        $('#cardSizeRange').val(3);
+        // Set slider to show 8 columns by default in IconView
+        // Set slider to show 6 columns by defauld in CardView
+        $('#cardSizeRange').val(5);
 
         // init version tooltips
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -167,11 +215,10 @@
         // Get games for the current page
         start = (currentPage - 1) * itemsPerPage
         end = start + itemsPerPage
-        baseGames = filteredGames.filter(game => game.type === 'BASE');
         paginatedGames = filteredGames.slice(start, end);
 
         paginatedGames.forEach(function (game) {
-            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${24 / getColumnsForCardSize(cardSize)}`);
+            const gameCol = $('<div class="col game-col"></div>').addClass(`col-${12 / getColumnsForCardSize(cardSize)}`);
 
             const card = $('<div class="card text-bg-dark game-card"></div>');
 
@@ -431,6 +478,7 @@
 
     function updateFilter() {
         // $('#filterDropdownBtn').toggle();
+        submitIndexSettings();
         if ($('#filterCheckBase').is(":checked")) {
             activeTypeFilters.add('BASE');
         } else {
