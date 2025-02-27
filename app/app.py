@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, Response
 from flask_login import LoginManager
+from flask_migrate import Migrate, upgrade
 from functools import wraps
 import yaml
 from file_watcher import Watcher
@@ -18,6 +19,7 @@ from titles import *
 from utils import *
 from library import *
 import titledb
+import os
 
 def init():
     global watcher
@@ -88,6 +90,14 @@ app.register_blueprint(auth_blueprint)
 
 with app.app_context():
     db.create_all()
+    if is_migration_needed():
+        upgrade()
+        logger.info("Migration applied successfully.")
+    # init users from ENV
+    if os.environ.get('USER_ADMIN_NAME') is not None:
+        init_user_from_environment(environment_name="USER_ADMIN", admin=True)
+    if os.environ.get('USER_GUEST_NAME') is not None:
+        init_user_from_environment(environment_name="USER_GUEST", admin=False)
 
 def tinfoil_error(error):
     return jsonify({
@@ -102,7 +112,8 @@ def tinfoil_access(f):
         auth_success = None
         request.verified_host = None
         # Host verification to prevent hotlinking
-        host_verification = request.is_secure or request.headers.get("X-Forwarded-Proto") == "https"
+        #Tinfoil doesn't send Hauth for file grabs, only directories, so ignore get_game endpoints.
+        host_verification = "/api/get_game" not in request.path and (request.is_secure or request.headers.get("X-Forwarded-Proto") == "https")
         if host_verification:
             request_host = request.host
             request_hauth = request.headers.get('Hauth')
@@ -141,7 +152,7 @@ def tinfoil_access(f):
             if hauth_success is False:
                 return tinfoil_error(error)
         
-        # Now checking auth if shop is private
+       # Now checking auth if shop is private
         if not app_settings['shop']['public']:
             # Shop is private
             if auth_success is None:
@@ -426,24 +437,31 @@ def reload_conf():
 def on_library_change(events):
     with app.app_context():
         created_events = [e for e in events if e.type == 'created']
-        if created_events:
-            new_files = [e.src_path for e in created_events]
-            library_path = created_events[0].directory
-            identify_files_and_add_to_db(library_path, new_files)
-
         modified_events = [e for e in events if e.type != 'created']
+
         for event in modified_events:
             if event.type == 'moved':
-                # update the path
-                update_file_path(event.directory, event.src_path, event.dest_path)
+                if file_exists_in_db(event.src_path):
+                    # update the path
+                    update_file_path(event.directory, event.src_path, event.dest_path)
+                else:
+                    # add to the database
+                    event.src_path = event.dest_path
+                    created_events.append(event)
 
             elif event.type == 'deleted':
                 # delete the file from library if it exists
                 delete_file_by_filepath(event.src_path)
 
             elif event.type == 'modified':
-                # can happen if file copy has started before running
+                # can happen if file copy has started before the app was running
                 identify_files_and_add_to_db(event.directory, [event.src_path])
+
+        if created_events:
+            directories = list(set(e.directory for e in created_events))
+            for library_path in directories:
+                new_files = [e.src_path for e in created_events if e.directory == library_path]
+                identify_files_and_add_to_db(library_path, new_files)
 
     post_library_change()
 
