@@ -108,12 +108,9 @@ Planned feature, in no particular order.
     - [ ] Automatic nsp/xci -> nsz conversion
  - Shop customization:
     - [ ] Encrypt shop
- - Support emulator Roms
-    - [ ] Scrape box arts
-    - [ ] Automatically create NSP forwarders
  - Saves manager:
     - [ ] Automatically discover Swicth device based on Tinfoil connection
     - [ ] Only backup and serve saves based on the user/Switch
  - External services:
     - [ ] Integrate torrent indexer Jackett to download updates automatically
-
+    
