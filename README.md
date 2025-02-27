@@ -34,7 +34,7 @@ Create a file named `docker-compose.yml` with the following content:
 version: "3"
 
 services:
-  ownfoil:
+  myfoil:
     container_name: myfoil
     image: snwaine/myfoil
    # environment:
