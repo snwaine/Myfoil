@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "1.0.0"
+description: myfoil
+name: myfoil
+version: 0.1.0
+source: https://github.com/snwaine/myfoil
