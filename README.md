@@ -1,10 +1,7 @@
 # Myfoil
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/snwaine/myfoil?sort=semver)](https://github.com/snwaine/myfoil/releases/latest)
 [![Docker Pulls](https://img.shields.io/docker/pulls/snwaine/myfoil)](https://hub.docker.com/r/snwaine/myfoil)
 [![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/snwaine/myfoil?sort=date&arch=amd64
 )](https://hub.docker.com/r/snwaine/myfoil/tags)
-[![Tinfoil Version](https://img.shields.io/badge/Tinfoil-v15.00-green)](https://tinfoil.io)
-[![Awoo Version](https://img.shields.io/badge/Awoo-v1.3.4-red)](https://github.com/Huntereb/Awoo-Installer)
 
 Myfoil is a Nintendo Switch library manager, that will also turn your library into a fully customizable and self-hosted Tinfoil Shop. The goal of this project is to manage your library, identify any missing content (DLCs or updates) and provide a user friendly way to browse your content. Some of the features include:
 
@@ -38,13 +35,19 @@ Create a file named `docker-compose.yml` with the following content:
 version: "3"
 
 services:
-  myfoil:
+  ownfoil:
     container_name: myfoil
     image: snwaine/myfoil
    # environment:
    #   # For write permission in config directory
    #   - PUID=1000
    #   - PGID=1000
+   #   # to create/update an admin user at startup
+   #   - USER_ADMIN_NAME=admin
+   #   - USER_ADMIN_PASSWORD=asdvnf!546
+   #   # to create/update a regular user at startup
+   #   - USER_GUEST_NAME=guest
+   #   - USER_GUEST_PASSWORD=oerze!@8981
     volumes:
       - /your/game/directory:/games
       - ./config:/app/config
@@ -115,14 +118,3 @@ Planned feature, in no particular order.
  - External services:
     - [ ] Integrate torrent indexer Jackett to download updates automatically
 
-# Similar Projects
-If you want to create your personal NSP Shop then check out these other similar projects:
-- [eXhumer/pyTinGen](https://github.com/eXhumer/pyTinGen)
-- [JackInTheShop/FT-SCEP](https://github.com/JackInTheShop/FT-SCEP)
-- [gianemi2/tinson-node](https://github.com/gianemi2/tinson-node)
-- [BigBrainAFK/tinfoil_gdrive_generator](https://github.com/BigBrainAFK/tinfoil_gdrive_generator)
-- [ibnux/php-tinfoil-server](https://github.com/ibnux/php-tinfoil-server)
-- [ramdock/nut-server](https://github.com/ramdock/nut-server)
-- [Myster-Tee/TinfoilWebServer](https://github.com/Myster-Tee/TinfoilWebServer)
-- [DevYukine/rustfoil](https://github.com/DevYukine/rustfoil)
-- [Orygin/gofoil](https://github.com/Orygin/gofoil)
