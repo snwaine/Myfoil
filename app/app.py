@@ -78,7 +78,7 @@ log_werkzeug.addFilter(FilterRemoveDateFromWerkzeugLogs())
 
 
 db.init_app(app)
-
+migrate = Migrate(app, db)
 login_manager.init_app(app)
 
 @login_manager.user_loader
