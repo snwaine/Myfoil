@@ -17,7 +17,6 @@ The project is still in development, expect things to break or change without no
 - [Installation](#nstallation)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
-- [Similar Projects](#similar-projects)
 
 # Installation
 ## Using Docker
