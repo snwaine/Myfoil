@@ -16,7 +16,7 @@ db = SQLAlchemy()
 
 # Alembic functions
 def get_current_db_version():
-    engine = create_engine(MyFOIL_DB)
+    engine = create_engine(MYFOIL_DB)
     with engine.connect() as connection:
         context = MigrationContext.configure(connection)
         current_rev = context.get_current_revision()
