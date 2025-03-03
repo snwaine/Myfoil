@@ -74,6 +74,9 @@
             </div>
         </div>
         <div class="col-auto">
+             <button type="button" class="btn btn-primary mb-3 scanBtn" onClick='scanLibrary()'>Scan library</button>
+        </div>
+        <div class="col-auto">
             <div class="btn-group dropdown-center" role="group">
                 <button id="itemsPerPageDropdownBtn" type="button" class="btn btn-primary dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
@@ -570,6 +573,32 @@
         renderGames();
 
     }
+
+    function scanLibrary(path = null)
+    {
+        $('.scanBtn').prop('disabled', true);
+        data = {path: path}
+        $.ajax(
+            {
+                url: '/api/library/scan',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (result)
+                {
+                    if (result['success'])
+                    {
+                        if (result['status_code'] == '302')
+                        {
+                            window.location.href = result['location']
+                            return
+                        }
+                        console.log('Scan Success!');
+                    }
+                    $('.scanBtn').prop('disabled', false);
+                }
+            });
+        }
 
     // $('#btnApplyFilters').on('click', function () {
     //     updateFilter();
