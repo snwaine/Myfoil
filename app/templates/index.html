@@ -137,16 +137,16 @@
     function getCheckboxStatus(checkboxId) {
         return $('#' + checkboxId).prop('checked');   //.is(":checked")
     }
-
-     function submitIndexSettings() {
-         data = {
-             filterBass: getCheckboxStatus("filterCheckBase"),
-             filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
-             filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
-             filterComplete: getCheckboxStatus("filterCheckComplete"),
-             filterMissingDlc: getCheckboxStatus("filterCheckDlc"),    
-        }
-
+    
+    function submitIndexSettings() {
+        data = {
+            filterBass: getCheckboxStatus("filterCheckBase"),
+            filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
+            filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
+            filterComplete: getCheckboxStatus("filterCheckComplete"),
+            filterMissingDlc: getCheckboxStatus("filterCheckDlc"),
+            }
+        
         $.ajax({
             url: "/api/settings/libraryBrowser",
             type: 'POST',
@@ -169,7 +169,36 @@
         });
     }
 
-
+    function getLibraryPath() {
+        data = {
+            filterBass: getCheckboxStatus("filterCheckBase"),
+            filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
+            filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
+            filterComplete: getCheckboxStatus("filterCheckComplete"),
+            filterMissingDlc: getCheckboxStatus("filterCheckDlc"),
+            }
+        
+        $.ajax({
+            url: "/api/settings/libraryBrowser",
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (result) {
+                if (!result['success']) {
+                    console.log('Not Success!');
+                    result['errors'].forEach(error => {
+                        path = error['path'];
+                        formId = settings_map[path];
+                        form = $('#' + formId);
+                        form.addClass('is-invalid');
+                        formTextElement = form.attr('aria-describedby');
+                        $("#" + formTextElement).addClass('invalid-feedback');
+                        $("#" + formTextElement).text(error['error']);
+                    });
+                }
+            }
+        });
+    }
     
     let games;
     let filteredGames;
