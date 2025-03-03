@@ -206,7 +206,7 @@
                 if (game.version.length && Array.isArray(game.version)) {
                     const popoverContent = game.version.map(version => 
                         `${version.release_date}: v${version.version} ${version.owned ? 'Owned' : 'Missing'}`
-                        ).join('\n');
+                    ).join('\n');
                     versionBadge.popover({
                         content: popoverContent,
                         trigger: 'click',
@@ -433,7 +433,6 @@
 
     function updateFilter() {
         // $('#filterDropdownBtn').toggle();
-        submitIndexSettings();
         if ($('#filterCheckBase').is(":checked")) {
             activeTypeFilters.add('BASE');
         } else {
