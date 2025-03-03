@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-
-
 {% block content %}
 {% include 'nav.html' %}
+
 <div id="content" class="container-fluid mt-3">
 
     <div class="row gy-2 gx-3 align-items-center justify-content-md-center">
@@ -73,13 +72,6 @@
                         class="bi bi-list-ul"></i></button>
             </div>
         </div>
-        
-        <div class="col-auto">
-            <div class="btn-group" role="group">
-                <button id="scanBtn" type="button" class="btn btn-primary" onClick='scanLibrary()'>Scan</button>
-            </div>
-        </div>
-            
         <div class="col-auto">
             <div class="btn-group dropdown-center" role="group">
                 <button id="itemsPerPageDropdownBtn" type="button" class="btn btn-primary dropdown-toggle"
@@ -120,85 +112,6 @@
 </div>
 
 <script>
-
-    // Load setting
-    settings_map = {
-        'library/path': 'libraryPathInput'
-    };
-
-    function getInputVal(inputId) {
-        return $("#" + inputId).val();
-    };
-
-    function setInputVal(inputId, value) {
-        return $("#" + inputId).val(value);
-    };
-
-    function getCheckboxStatus(checkboxId) {
-        return $('#' + checkboxId).prop('checked');   //.is(":checked")
-    }
-    
-    function submitIndexSettings() {
-        data = {
-            filterBass: getCheckboxStatus("filterCheckBase"),
-            filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
-            filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
-            filterComplete: getCheckboxStatus("filterCheckComplete"),
-            filterMissingDlc: getCheckboxStatus("filterCheckDlc"),
-            }
-        
-        $.ajax({
-            url: "/api/settings/libraryBrowser",
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: function (result) {
-                if (!result['success']) {
-                    console.log('Not Success!');
-                    result['errors'].forEach(error => {
-                        path = error['path'];
-                        formId = settings_map[path];
-                        form = $('#' + formId);
-                        form.addClass('is-invalid');
-                        formTextElement = form.attr('aria-describedby');
-                        $("#" + formTextElement).addClass('invalid-feedback');
-                        $("#" + formTextElement).text(error['error']);
-                    });
-                }
-            }
-        });
-    }
-
-    function getLibraryPath() {
-        data = {
-            filterBass: getCheckboxStatus("filterCheckBase"),
-            filterUpToDate: getCheckboxStatus("filterCheckUpToDate"),
-            filterMissingUpdate: getCheckboxStatus("filterCheckMissingUpdate"),
-            filterComplete: getCheckboxStatus("filterCheckComplete"),
-            filterMissingDlc: getCheckboxStatus("filterCheckDlc"),
-            }
-        
-        $.ajax({
-            url: "/api/settings/libraryBrowser",
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            success: function (result) {
-                if (!result['success']) {
-                    console.log('Not Success!');
-                    result['errors'].forEach(error => {
-                        path = error['path'];
-                        formId = settings_map[path];
-                        form = $('#' + formId);
-                        form.addClass('is-invalid');
-                        formTextElement = form.attr('aria-describedby');
-                        $("#" + formTextElement).addClass('invalid-feedback');
-                        $("#" + formTextElement).text(error['error']);
-                    });
-                }
-            }
-        });
-    }
     
     let games;
     let filteredGames;
@@ -606,38 +519,6 @@
         renderGames();
 
     }
-
-    settings_map = {'library/path': 'libraryPathInput'};
-    
-    function scanLibrary(path = null)
-    {
-        $('.scanBtn').prop('disabled', true);
-        path = getInputVal("libraryPathInput").trim();
-        data = {
-            path: path
-        }
-        data = {path: path}
-        $.ajax(
-            {
-                url: '/api/library/scan',
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                success: function (result)
-                {
-                    if (result['success'])
-                    {
-                        if (result['status_code'] == '302')
-                        {
-                            window.location.href = result['location']
-                            return
-                        }
-                        console.log('Scan Success!');
-                    }
-                    $('.scanBtn').prop('disabled', false);
-                }
-            });
-        }
 
     // $('#btnApplyFilters').on('click', function () {
     //     updateFilter();
